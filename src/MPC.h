@@ -6,6 +6,7 @@
 
 using namespace std;
 
+#define bound 1.0e10 //boundary value for variables which need bound
 class MPC {
  public:
   MPC();
