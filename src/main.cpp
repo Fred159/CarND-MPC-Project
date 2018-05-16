@@ -91,7 +91,7 @@ int main() {
           double py = j[1]["y"];
           double psi = j[1]["psi"];
           double v = j[1]["speed"];
-
+	
           /*
           * TODO: Calculate steering angle and throttle using MPC.
           *
@@ -100,9 +100,37 @@ int main() {
           */
           double steer_value;
           double throttle_value;
-		 
-	auto coeffs = polyfit(ptsx_car, ptsy_car,3);
+	VectorXd<double> x_veh_coor;
+		VectorXd<double> y_veh_coor;
 		
+		//transform Map coordinate into vehicle coordinate
+		//X = xp + cx -sy +sx +cy, this is vehicle coordinate change into Map coordinate
+		//Inverse the rotation matrix
+		for (int i =0; i < ptsx.size(); i++){
+			//way points x,y in vehicle coordinate
+			const double xx = ptsx[i] - px;
+			const double yy = ptsy[i] - py;
+			x_veh_coor = xx * cos(-psi) - yy * sin(-psi);
+			y_veh_coor = xx * sin(-psi) + yy * cos(-psi);
+		}
+		
+	auto coeffs = polyfit(x_veh_coor, y_veh_coor,3);
+		
+		const double cte = polyeval(coeffs,0);
+		//kinematic model is used
+		const double px_act = v * dt;
+		const double py_act = 0;
+		 const double psi_act = - v * steering_angle * dt / Lf;
+		  const double v_act = v + throttle * dt;
+		  const double cte_act = cte + v * sin(epsi) * dt;
+		  const double epsi_act = epsi + psi_act; 
+		  VectorXd state(6);
+		  state << px_act, py_act, psi_act, v_act, cte_act, epsi_act;
+		  vector<double> final_mpc_results = mpc.Solve(state, coeffs);
+		
+		
+		double steer_value = final_mpc_results[0]/ deg2rad(25); // convert to [-1..1] range
+          double throttle_value = final_mpc_results[1];
 
           json msgJson;
           // NOTE: Remember to divide by deg2rad(25) before you send the steering value back.
