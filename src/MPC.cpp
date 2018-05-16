@@ -146,8 +146,16 @@ vector<double> MPC::Solve(Eigen::VectorXd state, Eigen::VectorXd coeffs) {
   // 4 * 10 + 2 * 9
   size_t n_vars = 6*N+2*(N-1);
   // TODO: Set the number of constraints
-  size_t n_constraints = 2;
-
+  size_t n_constraints = 2*N;
+	
+// for readable and calculation
+	const double x = state[0];
+	const double y = state[1];
+	const double psi = state[2];
+	const double v =state[3];
+	const double cte = state[4];
+	const double epsi = state[5];
+	
   // Initial value of the independent variables.
   // SHOULD BE 0 besides initial state.
   Dvector vars(n_vars);
@@ -158,17 +166,50 @@ vector<double> MPC::Solve(Eigen::VectorXd state, Eigen::VectorXd coeffs) {
   Dvector vars_lowerbound(n_vars);
   Dvector vars_upperbound(n_vars);
   // TODO: Set lower and upper limits for variables.
-  vars_lowerbound = 
+	//for variables boundary, include x,y,velocity,psi,cross track error, error of psi
+  for (int i =0; i < delta_start; i++){
+	  vars_lowerbound = - bound;
+	  vars_uppperbound = bound;
+  }
+	// for acceleration boundary
+	const double pi = pi();
+  for ( int i = delta_start; i< a_start ; i ++){
+	  vars_lowerbound = -(pi/180)*25;
+	  vars_upperbound = (pi/180)*25;
+  }
+	//for steering anlge, delta's constraints.
+	for (int i = a_start; i < n_vars; i++){
+		vars_lowerbound = -1;
+		vars_lowerbound = 1;
+	}
+  
   // Lower and upper limits for the constraints
   // Should be 0 besides initial state.
 
   Dvector constraints_lowerbound(n_constraints);
   Dvector constraints_upperbound(n_constraints);
+	
   for (int i = 0; i < n_constraints; i++) {
     constraints_lowerbound[i] = 0;
     constraints_upperbound[i] = 0;
   }
-
+	//set lowerbound and upperbound
+	//but actually I don't undertand why the contraints equal to this time state.
+ constraints_lowerbound[x_start] = x;
+  constraints_lowerbound[y_start] = y;
+  constraints_lowerbound[psi_start] = psi;
+  constraints_lowerbound[v_start] = v;
+  constraints_lowerbound[cte_start] = cte;
+  constraints_lowerbound[epsi_start] = epsi;
+	
+	//uppper boundary setting with current state.
+  constraints_upperbound[x_start] = x;
+  constraints_upperbound[y_start] = y;
+  constraints_upperbound[psi_start] = psi;
+  constraints_upperbound[v_start] = v;
+  constraints_upperbound[cte_start] = cte;
+  constraints_upperbound[epsi_start] = epsi;
+	
   // object that computes objective and constraints
   FG_eval fg_eval(coeffs);
 
