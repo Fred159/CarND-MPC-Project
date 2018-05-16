@@ -100,6 +100,9 @@ int main() {
           */
           double steer_value;
           double throttle_value;
+		 
+		  steer_value = vars[0] / (deg2rad(25)* Lf);
+		  throttle_value = vars[1];
 
           json msgJson;
           // NOTE: Remember to divide by deg2rad(25) before you send the steering value back.
