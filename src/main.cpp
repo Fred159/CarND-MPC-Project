@@ -12,6 +12,10 @@
 // for convenience
 using json = nlohmann::json;
 
+const double dt = 0.1;
+
+ const double Lf = 2.67;
+
 // For converting back and forth between radians and degrees.
 constexpr double pi() { return M_PI; }
 double deg2rad(double x) { return x * pi() / 180; }
@@ -102,8 +106,8 @@ int main() {
           */
           double steer_value;
           double throttle_value;
-	VectorXd<double> x_veh_coor;
-		VectorXd<double> y_veh_coor;
+	Eigen::VectorXd<double> x_veh_coor;
+	Eigen::VectorXd<double> y_veh_coor;
 		
 		//transform Map coordinate into vehicle coordinate
 		//X = xp + cx -sy +sx +cy, this is vehicle coordinate change into Map coordinate
@@ -131,8 +135,8 @@ int main() {
 	vector<double> final_mpc_results = mpc.Solve(state, coeffs);
 
 
-	double steer_value = final_mpc_results[0]/ deg2rad(25); // convert to [-1..1] range
-        double throttle_value = final_mpc_results[1];
+	steer_value = final_mpc_results[0]/ deg2rad(25); // convert to [-1..1] range
+        throttle_value = final_mpc_results[1];
 
           json msgJson;
           // NOTE: Remember to divide by deg2rad(25) before you send the steering value back.
