@@ -24,7 +24,7 @@ double dt = 0.1;
 const double Lf = 2.67;
 
 // Set desired speed for the cost function (i.e. max speed)
-const double ref_v = 120;
+//const double ref_v = 120;
 
 // The solver takes all the state variables and actuator
 // variables in a singular vector. Thus, we should to establish
