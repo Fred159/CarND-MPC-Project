@@ -26,19 +26,15 @@ const double Lf = 2.67;
 // Set desired speed for the cost function (i.e. max speed)
 const double ref_v = 120;
 
-//initialized the size(Index) of each variable. Since the size of variable always change, the size_t is used.
-//state index , since the Ipopt needs vector inputs. so  each variable should be saperated with N points interval.
-
+// The solver takes all the state variables and actuator
+// variables in a singular vector. Thus, we should to establish
+// when one variable starts and another ends to make our lifes easier.
 size_t x_start = 0;
 size_t y_start = x_start + N;
 size_t psi_start = y_start + N;
 size_t v_start = psi_start + N;
-
-//Error index
 size_t cte_start = v_start + N;
-size_t epsi_start = epsi_start + N;
-
-//Another index for minimize the value gap between sequential actuation in vehicle moving.
+size_t epsi_start = cte_start + N;
 size_t delta_start = epsi_start + N;
 size_t a_start = delta_start + N - 1;
 
@@ -61,7 +57,6 @@ class FG_eval {
     // any anything you think may be beneficial.
     
     // Weights for how "important" each cost is - can be tuned
-	  /*
     const int cte_cost_weight = 2000;
     const int epsi_cost_weight = 2000;
     const int v_cost_weight = 1;
@@ -69,32 +64,24 @@ class FG_eval {
     const int a_cost_weight = 10;
     const int delta_change_cost_weight = 100;
     const int a_change_cost_weight = 10;
-    */
-	  
-	        const int weight_cte = 2000;
-		const int weight_epsi = 2000;
-		const int weight_v = 1;
-		const int weight_delta = 10;
-		const int weight_a = 10;
-		const int weight_delta_change = 100;
-		const int weight_a_change = 10;
+    
     // Cost for CTE, psi error and velocity
     for (int t = 0; t < N; t++) {
-      fg[0] += weight_cte * CppAD::pow(vars[cte_start + t], 2);
-      fg[0] += weight_epsi * CppAD::pow(vars[epsi_start + t], 2);
-      fg[0] += weight_v * CppAD::pow(vars[v_start + t] - ref_v, 2);
+      fg[0] += cte_cost_weight * CppAD::pow(vars[cte_start + t], 2);
+      fg[0] += epsi_cost_weight * CppAD::pow(vars[epsi_start + t], 2);
+      fg[0] += v_cost_weight * CppAD::pow(vars[v_start + t] - ref_v, 2);
     }
     
     // Costs for steering (delta) and acceleration (a)
     for (int t = 0; t < N-1; t++) {
-      fg[0] += weight_delta * CppAD::pow(vars[delta_start + t], 2);
-      fg[0] += weight_a * CppAD::pow(vars[a_start + t], 2);
+      fg[0] += delta_cost_weight * CppAD::pow(vars[delta_start + t], 2);
+      fg[0] += a_cost_weight * CppAD::pow(vars[a_start + t], 2);
     }
     
     // Costs related to the change in steering and acceleration (makes the ride smoother)
     for (int t = 0; t < N-2; t++) {
-      fg[0] += weight_delta_change * pow(vars[delta_start + t + 1] - vars[delta_start + t], 2);
-      fg[0] += weight_a_change * pow(vars[a_start + t + 1] - vars[a_start + t], 2);
+      fg[0] += delta_change_cost_weight * pow(vars[delta_start + t + 1] - vars[delta_start + t], 2);
+      fg[0] += a_change_cost_weight * pow(vars[a_start + t + 1] - vars[a_start + t], 2);
     }
     
     // Setup Model Constraints
