@@ -57,8 +57,8 @@ class FG_eval {
     // any anything you think may be beneficial.
     
     // Weights for how "important" each cost is - can be tuned
-    const int cte_cost_weight = 2000;
-    const int epsi_cost_weight = 2000;
+    const int cte_cost_weight = 8;
+    const int epsi_cost_weight = 0.4;
     const int v_cost_weight = 1;
     const int delta_cost_weight = 10;
     const int a_cost_weight = 10;
