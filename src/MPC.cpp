@@ -169,14 +169,14 @@ vector<double> MPC::Solve(Eigen::VectorXd state, Eigen::VectorXd coeffs) {
 	// TODO: Set lower and upper limits for variables.
 	//for variables boundary, include x,y,velocity,psi,cross track error, error of psi
 	for (int i = 0; i < delta_start; i++) {
-		vars_lowerbound[i] = -bound;
-		vars_upperbound[i] = bound;
+		  vars_lowerbound[i] = -1.0e19;
+    vars_upperbound[i] = 1.0e19;
 	}
 	// for acceleration boundary
 
 	for (int i = delta_start; i< a_start; i++) {
-		vars_lowerbound[i] = -(PI / 180) * 25;
-		vars_upperbound[i] = (PI / 180) * 25;
+	vars_lowerbound[i] = -0.436332;
+    vars_upperbound[i] = 0.436332;
 	}
 	//for steering anlge, delta's constraints.
 	for (int i = a_start; i < n_vars; i++) {
