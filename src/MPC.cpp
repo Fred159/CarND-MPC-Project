@@ -19,6 +19,7 @@ double dt = 0.05;
 // presented in the classroom matched the previous radius.
 //
 // This is the length from front to CoG that has a similar radius.
+const double ref_v = 80;
 
 const double Lf = 2.67;
 //initialized the size(Index) of each variable. Since the size of variable always change, the size_t is used.
