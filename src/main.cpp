@@ -116,8 +116,8 @@ int main() {
 			//way points x,y in vehicle coordinate
 			const double xx = ptsx[i] - px;
 			const double yy = ptsy[i] - py;
-			x_veh_coor = xx * cos(-psi) - yy * sin(-psi);
-			y_veh_coor = xx * sin(-psi) + yy * cos(-psi);
+			x_veh_coor[i] = xx * cos(-psi) - yy * sin(-psi);
+			y_veh_coor[i] = xx * sin(-psi) + yy * cos(-psi);
 		}
 		
 	auto coeffs = polyfit(x_veh_coor, y_veh_coor,3);
