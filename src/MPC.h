@@ -6,6 +6,9 @@
 
 using namespace std;
 
+#define bound 1.0e5
+#define PI 3.1415926
+
 class MPC {
  public:
   MPC();
