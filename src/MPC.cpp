@@ -55,7 +55,7 @@ class FG_eval {
 	  const int weight_cte = 2000;
 	  const int weight_epsi = 2000;
 	  const int weight_v = 1;
-	  const int weight_deleta = 10;
+	  const int weight_delta = 10;
 	  const int weight_a = 10;
 	  const int weight_delta_change = 100;
 	  const int weight_a_change = 10;
@@ -65,7 +65,7 @@ class FG_eval {
 	  for (int t = 0; t < N; t++) {
 		  fg[0] += weight_cte * CppAD::pow(vars[cte_start + t], 2);
 		  fg[0] += weight_epsi * CppAD::pow(vars[epsi_start + t], 2);
-		  fg[0] += weight_v_start * CppAD::pow(vars[v_start + t] - ref_v, 2);
+		  fg[0] += weight_v * CppAD::pow(vars[v_start + t] - ref_v, 2);
 	  }
 
 	  // Minimize the use of actuators.
@@ -169,10 +169,10 @@ vector<double> MPC::Solve(Eigen::VectorXd state, Eigen::VectorXd coeffs) {
 	//for variables boundary, include x,y,velocity,psi,cross track error, error of psi
   for (int i =0; i < delta_start; i++){
 	  vars_lowerbound[i] = - bound;
-	  vars_uppperbound[i] = bound;
+	  vars_upperbound[i] = bound;
   }
 	// for acceleration boundary
-	const double pi = pi();
+	
   for ( int i = delta_start; i< a_start ; i ++){
 	  vars_lowerbound[i] = -(pi/180)*25;
 	  vars_upperbound[i] = (pi/180)*25;
