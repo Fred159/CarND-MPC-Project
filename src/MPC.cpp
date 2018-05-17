@@ -168,19 +168,19 @@ vector<double> MPC::Solve(Eigen::VectorXd state, Eigen::VectorXd coeffs) {
   // TODO: Set lower and upper limits for variables.
 	//for variables boundary, include x,y,velocity,psi,cross track error, error of psi
   for (int i =0; i < delta_start; i++){
-	  vars_lowerbound = - bound;
-	  vars_uppperbound = bound;
+	  vars_lowerbound[i] = - bound;
+	  vars_uppperbound[i] = bound;
   }
 	// for acceleration boundary
 	const double pi = pi();
   for ( int i = delta_start; i< a_start ; i ++){
-	  vars_lowerbound = -(pi/180)*25;
-	  vars_upperbound = (pi/180)*25;
+	  vars_lowerbound[i] = -(pi/180)*25;
+	  vars_upperbound[i] = (pi/180)*25;
   }
 	//for steering anlge, delta's constraints.
 	for (int i = a_start; i < n_vars; i++){
-		vars_lowerbound = -1;
-		vars_lowerbound = 1;
+		vars_lowerbound[i] = -1;
+		vars_lowerbound[i] = 1;
 	}
   
   // Lower and upper limits for the constraints
@@ -193,7 +193,7 @@ vector<double> MPC::Solve(Eigen::VectorXd state, Eigen::VectorXd coeffs) {
     constraints_lowerbound[i] = 0;
     constraints_upperbound[i] = 0;
   }
-	//set lowerbound and upperbound
+	//lowerbound and upperbound
 	//but actually I don't undertand why the contraints equal to this time state.
  constraints_lowerbound[x_start] = x;
   constraints_lowerbound[y_start] = y;
