@@ -8,9 +8,10 @@ using CppAD::AD;
 
 // Set the timestep length and duration
 // Currently tuned to predict 1 second worth
-size_t N = 10;
-double dt = 0.1;
-
+//**size_t N = 10;
+//**double dt = 0.1;
+size_t N = 25;
+double dt = 0.05;
 // This value assumes the model presented in the classroom is used.
 //
 // It was obtained by measuring the radius formed by running the vehicle in the
@@ -26,17 +27,22 @@ const double Lf = 2.67;
 // Set desired speed for the cost function (i.e. max speed)
 const double ref_v = 120;
 
-// The solver takes all the state variables and actuator
-// variables in a singular vector. Thus, we should to establish
-// when one variable starts and another ends to make our lifes easier.
+//initialized the size(Index) of each variable. Since the size of variable always change, the size_t is used.
+//state index , since the Ipopt needs vector inputs. so  each variable should be saperated with N points interval.
+
 size_t x_start = 0;
 size_t y_start = x_start + N;
 size_t psi_start = y_start + N;
 size_t v_start = psi_start + N;
+
+//Error index
 size_t cte_start = v_start + N;
-size_t epsi_start = cte_start + N;
+size_t epsi_start = epsi_start + N;
+
+//Another index for minimize the value gap between sequential actuation in vehicle moving.
 size_t delta_start = epsi_start + N;
 size_t a_start = delta_start + N - 1;
+
 
 class FG_eval {
  public:
@@ -57,14 +63,22 @@ class FG_eval {
     // any anything you think may be beneficial.
     
     // Weights for how "important" each cost is - can be tuned
+   /*
     const int cte_cost_weight = 2000;
     const int epsi_cost_weight = 2000;
     const int v_cost_weight = 1;
     const int delta_cost_weight = 10;
     const int a_cost_weight = 10;
     const int delta_change_cost_weight = 100;
-    const int a_change_cost_weight = 10;
-    
+    const int a_change_cost_weight = 10; */
+   
+  const int weight_cte = 2000;
+		const int weight_epsi = 2000;
+		const int weight_v = 1;
+		const int weight_delta = 10;
+		const int weight_a = 10;
+		const int weight_delta_change = 100;
+		const int weight_a_change = 10;
     // Cost for CTE, psi error and velocity
     for (int t = 0; t < N; t++) {
       fg[0] += cte_cost_weight * CppAD::pow(vars[cte_start + t], 2);
