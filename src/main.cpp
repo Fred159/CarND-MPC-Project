@@ -91,7 +91,9 @@ int main() {
           double py = j[1]["y"];
           double psi = j[1]["psi"];
           double v = j[1]["speed"];
-	
+	  double steering_angle = j[1]["steering_angle"];
+          double throttle = j[1]["throttle"];
+		
           /*
           * TODO: Calculate steering angle and throttle using MPC.
           *
@@ -116,21 +118,21 @@ int main() {
 		
 	auto coeffs = polyfit(x_veh_coor, y_veh_coor,3);
 		
-		const double cte = polyeval(coeffs,0);
-		//kinematic model is used
-		const double px_act = v * dt;
-		const double py_act = 0;
-		 const double psi_act = - v * steering_angle * dt / Lf;
-		  const double v_act = v + throttle * dt;
-		  const double cte_act = cte + v * sin(epsi) * dt;
-		  const double epsi_act = epsi + psi_act; 
-		  VectorXd state(6);
-		  state << px_act, py_act, psi_act, v_act, cte_act, epsi_act;
-		  vector<double> final_mpc_results = mpc.Solve(state, coeffs);
-		
-		
-		double steer_value = final_mpc_results[0]/ deg2rad(25); // convert to [-1..1] range
-          double throttle_value = final_mpc_results[1];
+	const double cte = polyeval(coeffs,0);
+	//kinematic model is used, below paratemters are all predicted value in one step future. this is the core of MPC
+	const double px_act = v * dt;
+	const double py_act = 0;
+	const double psi_act = - v * steering_angle * dt / Lf;
+	const double v_act = v + throttle * dt;
+	const double cte_act = cte + v * sin(epsi) * dt;
+	const double epsi_act = epsi + psi_act; 
+	VectorXd state(6);
+	state << px_act, py_act, psi_act, v_act, cte_act, epsi_act;
+	vector<double> final_mpc_results = mpc.Solve(state, coeffs);
+
+
+	double steer_value = final_mpc_results[0]/ deg2rad(25); // convert to [-1..1] range
+        double throttle_value = final_mpc_results[1];
 
           json msgJson;
           // NOTE: Remember to divide by deg2rad(25) before you send the steering value back.
