@@ -23,18 +23,22 @@ double dt = 0.1;
 // This is the length from front to CoG that has a similar radius.
 const double Lf = 2.67;
 
-// Set desired speed for the cost function (i.e. max speed)
-const double ref_v = 120;
+const double ref_v = 80;
 
-// The solver takes all the state variables and actuator
-// variables in a singular vector. Thus, we should to establish
-// when one variable starts and another ends to make our lifes easier.
+
+//initialized the size(Index) of each variable. Since the size of variable always change, the size_t is used.
+//state index , since the Ipopt needs vector inputs. so  each variable should be saperated with N points interval.
+
 size_t x_start = 0;
 size_t y_start = x_start + N;
 size_t psi_start = y_start + N;
 size_t v_start = psi_start + N;
+
+//Error index
 size_t cte_start = v_start + N;
 size_t epsi_start = cte_start + N;
+
+//Another index for minimize the value gap between sequential actuation in vehicle moving.
 size_t delta_start = epsi_start + N;
 size_t a_start = delta_start + N - 1;
 
