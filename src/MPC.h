@@ -6,9 +6,11 @@
 
 using namespace std;
 
-#define bound 1.0e10 //boundary value for variables which need bound
-#define pi  3.1415926;
+#define bound 1.0e5 //boundary value for variables which need bound
+#define pi 3.1415926;
 #define ref_v 80;
+
+
 class MPC {
  public:
   MPC();
