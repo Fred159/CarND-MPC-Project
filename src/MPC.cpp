@@ -178,8 +178,8 @@ vector<double> MPC::Solve(Eigen::VectorXd state, Eigen::VectorXd coeffs) {
 	// for acceleration boundary
 
 	for (int i = delta_start; i< a_start; i++) {
-		vars_lowerbound[i] = -(pi / 180) * 25;
-		vars_upperbound[i] = (pi / 180) * 25;
+		vars_lowerbound[i] = -(PI / 180) * 25;
+		vars_upperbound[i] = (PI / 180) * 25;
 	}
 	//for steering anlge, delta's constraints.
 	for (int i = a_start; i < n_vars; i++) {
