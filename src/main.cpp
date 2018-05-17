@@ -106,8 +106,8 @@ int main() {
           */
           double steer_value;
           double throttle_value;
-	Eigen::VectorXd<double> x_veh_coor;
-	Eigen::VectorXd<double> y_veh_coor;
+	Eigen::VectorXd x_veh_coor(ptsx.size());
+	Eigen::VectorXd y_veh_coor(ptsy.size());
 		
 		//transform Map coordinate into vehicle coordinate
 		//X = xp + cx -sy +sx +cy, this is vehicle coordinate change into Map coordinate
@@ -121,7 +121,7 @@ int main() {
 		}
 		
 	auto coeffs = polyfit(x_veh_coor, y_veh_coor,3);
-		
+	const double epsi = -atan(coeffs[1]);
 	const double cte = polyeval(coeffs,0);
 	//kinematic model is used, below paratemters are all predicted value in one step future. this is the core of MPC
 	const double px_act = v * dt;
@@ -130,7 +130,7 @@ int main() {
 	const double v_act = v + throttle * dt;
 	const double cte_act = cte + v * sin(epsi) * dt;
 	const double epsi_act = epsi + psi_act; 
-	VectorXd state(6);
+	Eigen::VectorXd state(6);
 	state << px_act, py_act, psi_act, v_act, cte_act, epsi_act;
 	vector<double> final_mpc_results = mpc.Solve(state, coeffs);
 
