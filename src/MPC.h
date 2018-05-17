@@ -12,7 +12,7 @@ class MPC {
   MPC();
 
   virtual ~MPC();
-  const double pi = M_pi;
+  const double pi = 3.1415926;
  const double ref_v = 80;
   // Solve the model given an initial state and polynomial coefficients.
   // Return the first actuatotions.
