@@ -57,13 +57,13 @@ class FG_eval {
     // any anything you think may be beneficial.
     
     // Weights for how "important" each cost is - can be tuned
-    const int cte_cost_weight = 8;
-    const int epsi_cost_weight = 0.4;
-    const int v_cost_weight = 1;
-    const int delta_cost_weight = 10;
-    const int a_cost_weight = 10;
-    const int delta_change_cost_weight = 100;
-    const int a_change_cost_weight = 10;
+    const int cte_cost_weight = 2;
+    const int epsi_cost_weight = 0.1;
+    const int v_cost_weight = 3;
+    const int delta_cost_weight = 2;
+    const int a_cost_weight = 2;
+    const int delta_change_cost_weight = 5;
+    const int a_change_cost_weight = 3;
     
     // Cost for CTE, psi error and velocity
     for (int t = 0; t < N; t++) {
