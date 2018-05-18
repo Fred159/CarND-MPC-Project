@@ -56,13 +56,13 @@ public:
 		// the Solver function below.
 
 		// the cost function from udacity. input is fg and vars, then update the fg.
-		const int weight_cte = 2100;
-		const int weight_epsi = 2100;
+		const int weight_cte = 2010;
+		const int weight_epsi = 2010;
 		const int weight_v = 1;
-		const int weight_delta = 11;
-		const int weight_a = 9;
-		const int weight_delta_change = 90;
-		const int weight_a_change = 8;
+		const int weight_delta = 12;
+		const int weight_a = 11;
+		const int weight_delta_change = 110;
+		const int weight_a_change = 11;
 
 
 		fg[0] = 0;
