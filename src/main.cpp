@@ -142,18 +142,18 @@ int main() {
 					vector<double> final_mpc_results = mpc.Solve(state, coeffs);
 
 
-					steer_value = final_mpc_results[0] / deg2rad(25); // convert to [-1..1] range
+					steer_value = final_mpc_results[0] / (deg2rad(25)*Lf); // convert to [-1..1] range
 					throttle_value = final_mpc_results[1];
 
 					json msgJson;
 					// NOTE: Remember to divide by deg2rad(25) before you send the steering value back.
 					// Otherwise the values will be in between [-deg2rad(25), deg2rad(25] instead of [-1, 1].
-					msgJson["steering_angle"] = -steer_value;
+					msgJson["steering_angle"] = steer_value;
 					msgJson["throttle"] = throttle_value;
 
 					//Display the MPC predicted trajectory 
-					vector<double> mpc_x_vals;
-					vector<double> mpc_y_vals;
+					vector<double> mpc_x_vals = state[0];
+					vector<double> mpc_y_vals = state[1];
 
 					//.. add (x,y) points to list here, points are in reference to the vehicle's coordinate system
 					// the points in the simulator are connected by a Green line
@@ -171,7 +171,11 @@ int main() {
 					msgJson["next_x"] = next_x_vals;
 					msgJson["next_y"] = next_y_vals;
 
-
+					for(int i = 0; i <ptsx.size();i++){
+						next_x_vals.push_back(x_veh_coor[i]);
+						next_y_vals.push_back(y_veh_coor[i]);
+					}
+					
 					auto msg = "42[\"steer\"," + msgJson.dump() + "]";
 					std::cout << msg << std::endl;
 					// Latency
