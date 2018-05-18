@@ -57,7 +57,7 @@ public:
 
 		// the cost function from udacity. input is fg and vars, then update the fg.
 		const int weight_cte = 1500;
-		const int weight_epsi = 1000;
+		const int weight_epsi = 2500;
 		const int weight_v = 2;
 		const int weight_delta = 15;
 		const int weight_a = 12;
