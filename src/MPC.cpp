@@ -8,7 +8,7 @@ using CppAD::AD;
 
 // Set the timestep length and duration
 // Currently tuned to predict 1 second worth
-size_t N = 10;
+size_t N = 25;
 double dt = 0.1;
 
 // This value assumes the model presented in the classroom is used.
@@ -56,13 +56,13 @@ public:
 		// the Solver function below.
 
 		// the cost function from udacity. input is fg and vars, then update the fg.
-		const int weight_cte = 2000;
-		const int weight_epsi = 2000;
-		const int weight_v = 1;
-		const int weight_delta = 10;
-		const int weight_a = 10;
-		const int weight_delta_change = 100;
-		const int weight_a_change = 10;
+		const int weight_cte = 1500;
+		const int weight_epsi = 1000;
+		const int weight_v = 2;
+		const int weight_delta = 15;
+		const int weight_a = 12;
+		const int weight_delta_change = 90;
+		const int weight_a_change = 8;
 
 
 		fg[0] = 0;
