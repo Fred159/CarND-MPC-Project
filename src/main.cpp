@@ -107,6 +107,8 @@ int main() {
 					*/
 					double steer_value;
 					double throttle_value;
+					
+					
 					Eigen::VectorXd x_veh_coor(ptsx.size());
 					Eigen::VectorXd y_veh_coor(ptsy.size());
 
@@ -124,15 +126,19 @@ int main() {
 					auto coeffs = polyfit(x_veh_coor, y_veh_coor, 3);
 					const double epsi = -atan(coeffs[1]);
 					const double cte = polyeval(coeffs, 0);
+					
 					//kinematic model is used, below paratemters are all predicted value in one step future. this is the core of MPC
 					const double px_act = v * dt;
+					//the reason why py is zero is that after transform , vehicle only move in x direction , in y direction it just keep to 0 
 					const double py_act = 0;
 					const double psi_act = -v * steering_angle * dt / Lf;
 					const double v_act = v + throttle * dt;
 					const double cte_act = cte + v * sin(epsi) * dt;
 					const double epsi_act = epsi + psi_act;
+					
 					Eigen::VectorXd state(6);
 					state << px_act, py_act, psi_act, v_act, cte_act, epsi_act;
+					
 					vector<double> final_mpc_results = mpc.Solve(state, coeffs);
 
 
@@ -142,7 +148,7 @@ int main() {
 					json msgJson;
 					// NOTE: Remember to divide by deg2rad(25) before you send the steering value back.
 					// Otherwise the values will be in between [-deg2rad(25), deg2rad(25] instead of [-1, 1].
-					msgJson["steering_angle"] = steer_value;
+					msgJson["steering_angle"] = -steer_value;
 					msgJson["throttle"] = throttle_value;
 
 					//Display the MPC predicted trajectory 
