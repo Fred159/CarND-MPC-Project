@@ -23,16 +23,16 @@ by using the wheel theory in udacity class, weights are resample in order to use
 ![Success Run Capture](https://github.com/Fred159/CarND-Kidnapped-Vehicle-Project/blob/master/Success%20Run.jpg)
 
 ## Environment 
-1. Docker windows
+1. Docker windows toolbox
 2. github online code editor
+3.Visual Studio 2017
 
 ## References
 1. Udacity class
 2. darienmt
 3. mvirgo
-4. rtsaad
-5. bguisard
-6. sebastian-sampayo
+4. sebastian-sampayo
+5. NikolasEnt
 
 ## Summary
 * Particle filter is a great algorithm . It doesn't linearize the complex vehicle model, it just using probability to approximate the result. But it needs a lot of computation. How to extract the feature of the efficient particles (weight) is very important thing.
