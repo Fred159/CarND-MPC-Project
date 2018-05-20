@@ -3,12 +3,21 @@
 Based on the vehicle kinematic model's predictive result, optimizing the control performance. The pid control is not enough for high speed control. The another problem of PID control doesn't have capability to handle the latency. So in high speed vehicle , latency is very critical vehicle control and vehicle safety.
 
 ## Introduction
-* Data explain
+### Data explain
 1. Udacity simulator provides trajectory reference points in [x,y] format with map coordinate.
 2. (Udacity simulator also provides) vehicle's position in [x,y] format in map coordinate is also provided.what's more, vehicle's velocity, steering angle, yaw angle and acceleration are provied.
 
-* Algorithm strategy.
-1. 
+### Algorithm strategy.
+1. Initialize the interval of predicted trajectory and sample time.
+2. Since IPOPT solver needs vector input, data index is initialized with size_t.
+3. define the FG_eval for IPOPT solver.
+ - FG_eval class is used for making the vector to feed to IPOPT solver.
+ - Define the cost function (copy and paste from udacity keep in mind lesson). No additional cost function is added.
+4. Based on the number of variance , define length of variance and constraints
+5. Define the variance lowerbound and upperbound by using the index of variance.(defined in FG_eval)
+ - Acceleration boudary is [-1,1] <= means max deceleration and max acceleration.
+ - Steering value boundary is [-25,25] <= for vehicle stability.
+6. 
 
 1. GPS data
 use GPS signal to make transition matrix. Converting the observations in vehicle coordinate into global coordinate. 
