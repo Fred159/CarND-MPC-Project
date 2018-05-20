@@ -43,7 +43,7 @@ MPC based on the (kinematic model in this project) model, handle the latency of 
 ### Environment 
 1. Docker windows toolbox
 2. github online code editor
-3.Visual Studio 2017
+3. Visual Studio 2017
 
 ### References
 1. Udacity class
