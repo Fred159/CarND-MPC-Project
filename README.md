@@ -1,6 +1,15 @@
-# Kidnapped Vehicle project
-Use particle filter to localize the accurate position.
-## Sensor
+# Model Predictive Control
+### Abstract
+Based on the vehicle kinematic model's predictive result, optimizing the control performance. The pid control is not enough for high speed control. The another problem of PID control doesn't have capability to handle the latency. So in high speed vehicle , latency is very critical vehicle control and vehicle safety.
+
+## Introduction
+* Data explain
+1. Udacity simulator provides trajectory reference points in [x,y] format with map coordinate.
+2. (Udacity simulator also provides) vehicle's position in [x,y] format in map coordinate is also provided.what's more, vehicle's velocity, steering angle, yaw angle and acceleration are provied.
+
+* Algorithm strategy.
+1. 
+
 1. GPS data
 use GPS signal to make transition matrix. Converting the observations in vehicle coordinate into global coordinate. 
 2. invehicle sensor 
