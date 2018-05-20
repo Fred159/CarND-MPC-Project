@@ -1,5 +1,5 @@
 # Model Predictive Control
-### Abstract
+## Abstract
 Based on the vehicle kinematic model's predictive result, optimizing the control performance. The pid control is not enough for high speed control. The another problem of PID control doesn't have capability to handle the latency. So in high speed vehicle , latency is very critical vehicle control and vehicle safety.
 
 ## Introduction
@@ -7,7 +7,7 @@ Based on the vehicle kinematic model's predictive result, optimizing the control
 1. Udacity simulator provides trajectory reference points in [x,y] format with map coordinate.
 2. (Udacity simulator also provides) vehicle's position in [x,y] format in map coordinate is also provided.what's more, vehicle's velocity, steering angle, yaw angle and acceleration are provied.
 
-### Algorithm strategy.
+### Algorithm strategy.(MPC.cpp)
 1. Initialize the interval of predicted trajectory and sample time.
 2. Since IPOPT solver needs vector input, data index is initialized with size_t.
 3. define the FG_eval for IPOPT solver.
@@ -17,44 +17,42 @@ Based on the vehicle kinematic model's predictive result, optimizing the control
 5. Define the variance lowerbound and upperbound by using the index of variance.(defined in FG_eval)
  - Acceleration boudary is [-1,1] <= means max deceleration and max acceleration.
  - Steering value boundary is [-25,25] <= for vehicle stability.
-6. 
+ 
+### Algorithm strategy.(MPC.cpp)
+1. For convinient, PI and bound parameters are added.
 
-1. GPS data
-use GPS signal to make transition matrix. Converting the observations in vehicle coordinate into global coordinate. 
-2. invehicle sensor 
-extract yaw and velocity.(actually, it also can derived from GPS data , but it maybe not so accurate)
+### Algorithm strategy.(main.cpp)
+This file content can be divide into 2 parts. 
+1. Mapping reference trajectory's points [x,y] into vehicle coordinate. 
+ - In kidnapped vehicle project, fixed axis transformation was used. In this project, reference trajectory's [x,y] needs to be transformed into vehicle coordinate. The reason why transfrom reference points into vehicle coordinate is that vehicle needs ref trajectory points to calculate cte and epsi in next time step.
+2. Feeding the (next time step) predicted vehicle position and other states into mpc.Solve function. Then mpc.Solve feeds state into IPOPT solver and executes online optimization. Then IPOPT calculates the coefficient of polynominal which calculated as the smallest cost function. Then [steering andle, acceleration] can be extract from 'solution' <= As udacity guide.
+ - Vehicle only use the first value of [steering andle, acceleration] in fg
+ 
+## Simulation Results.
+1. Vehicle can run the track with good performance in velocity of 70km/h.
+![MPC_corner1](https://github.com/Fred159/CarND-MPC-Project/blob/master/mpc_corner1.png)
+![MPC_corner2](https://github.com/Fred159/CarND-MPC-Project/blob/master/mpc_corner2.png)
+![MPC_corner3](https://github.com/Fred159/CarND-MPC-Project/blob/master/mpc_corner3.png)
 
-## Particle fitler
-1.Initialization
+2. Vehicle performance was not good enough run with 90~120 km/h.
 
-2.using vehicle motion model to predict the next vehicle position 
+## Conclution
+MPC based on the (kinematic model in this project) model, handle the latency of system. And based on the cost function, additional constraints are also can be added. MPC is better than PID controll in high speed vehicle. 
 
-3.using updated state and sensor value , by converting the coordinate between vehicle and map , we can calculate the particles' weights. 
-Particles far away from predicted state that have small weights.
-by using these weights, algorithm generates the actual vehicle position
-
-4.resample the weight. 
-by using the wheel theory in udacity class, weights are resample in order to use in next step. 
-
-![Simulator Run Capture](https://github.com/Fred159/CarND-Kidnapped-Vehicle-Project/blob/master/run%20picture%20pf.jpg)
-
-![Success Run Capture](https://github.com/Fred159/CarND-Kidnapped-Vehicle-Project/blob/master/Success%20Run.jpg)
-
-## Environment 
+## Appendix
+### Environment 
 1. Docker windows toolbox
 2. github online code editor
 3.Visual Studio 2017
 
-## References
+### References
 1. Udacity class
 2. darienmt
 3. mvirgo
 4. sebastian-sampayo
 5. NikolasEnt
 
-## Summary
-* Particle filter is a great algorithm . It doesn't linearize the complex vehicle model, it just using probability to approximate the result. But it needs a lot of computation. How to extract the feature of the efficient particles (weight) is very important thing.
-* Particle filter's particles quantity bigger, the better result it returns
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 # CarND-Controls-MPC
 Self-Driving Car Engineer Nanodegree Program
