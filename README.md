@@ -32,7 +32,7 @@ This file content can be divide into 2 parts.
 1. Vehicle can run the track with good performance in velocity of 70km/h.
 ![MPC_corner1](https://github.com/Fred159/CarND-MPC-Project/blob/master/mpc_corner1.png)
 ![MPC_corner2](https://github.com/Fred159/CarND-MPC-Project/blob/master/mpc_corner2.png)
-
+![MPC_corner3](https://github.com/Fred159/CarND-MPC-Project/blob/master/mpc_corner3_1.png)
 
 2. Vehicle performance was not good enough run with 90~120 km/h.
 
