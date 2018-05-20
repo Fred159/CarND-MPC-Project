@@ -23,7 +23,7 @@ double dt = 0.1;
 // This is the length from front to CoG that has a similar radius.
 const double Lf = 2.67;
 
-const double ref_v = 70;
+const double ref_v = 120;
 
 
 //initialized the size(Index) of each variable. Since the size of variable always change, the size_t is used.
